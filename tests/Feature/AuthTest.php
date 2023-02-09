@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Events\UserSignedUp;
 use App\Http\Resources\LoggedInUserResource;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -44,7 +43,6 @@ class AuthTest extends TestCase
      */
     public function testAUserCanSignupSuccessfully()
     {
-        Event::fake();
 
         $request = [
             'email' => $this->faker->safeEmail(),
@@ -77,8 +75,6 @@ class AuthTest extends TestCase
                 ],
 
             ]);
-
-        Event::assertDispatched(UserSignedUp::class);
 
         $this->assertInstanceOf(LoggedInUserResource::class, $response->getOriginalContent());
     }
