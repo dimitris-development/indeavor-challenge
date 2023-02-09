@@ -22,9 +22,7 @@ use OpenApi\Attributes as OAT;
         type: 'http'
     ),
     OAT\Tag(name: 'auth', description: 'User authentication'),
-    OAT\Tag(name: 'adminAuth', description: 'Admin authentication'),
     OAT\Tag(name: 'profile', description: 'User profile'),
-    OAT\Tag(name: 'adminProfile', description: 'Admin profile'),
     OAT\Schema(
         schema: 'ValidationError',
         properties: [

@@ -34,7 +34,6 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api')
                 ->group(function () {
                     $this->getUserRoutes();
-                    $this->getAdminRoutes();
                 });
 
             Route::middleware('web')
@@ -57,26 +56,6 @@ class RouteServiceProvider extends ServiceProvider
             'middleware' => ['auth:user'],
         ], function () {
             require base_path('routes/api/profile.php');
-        });
-    }
-
-    /**
-     * Get the admin routes.
-     *
-     * @return void
-     */
-    private function getAdminRoutes()
-    {
-        Route::group([
-            'prefix' => 'admin',
-        ], function () {
-            require base_path('routes/api/admin/auth.php');
-
-            Route::group([
-                'middleware' => ['auth:admin'],
-            ], function () {
-                require base_path('routes/api/admin/profile.php');
-            });
         });
     }
 
