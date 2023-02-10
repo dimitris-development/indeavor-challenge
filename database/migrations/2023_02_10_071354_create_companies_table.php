@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('uuid');
             $table->string('name');
-            $table->string('vat');
             $table->timestamps();
         });
     }

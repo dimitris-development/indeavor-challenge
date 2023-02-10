@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
-class UserSeeder extends Seeder
+class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,24 +16,16 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
+        DB::table('roles')->insert([
             [
                 'id' => 1,
-                'name' => 'Dimitris',
+                'slug' => 'admin',
                 'uuid' => (string) Str::uuid(),
-                'email' => 'dimitris@example.com',
-                'password' => Hash::make('123456'),
-                'role_id' => 2,
-                'company_id' => 1
             ],
             [
                 'id' => 2,
-                'name' => 'Admin',
+                'slug' => 'scheduler',
                 'uuid' => (string) Str::uuid(),
-                'email' => 'admin@example.com',
-                'password' => Hash::make('123456'),
-                'role_id' => 1,
-                'company_id' => 2
             ]
         ]);
     }
