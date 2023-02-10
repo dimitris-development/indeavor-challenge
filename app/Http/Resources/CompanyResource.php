@@ -8,28 +8,18 @@ use JsonSerializable;
 use OpenApi\Attributes as OAT;
 
 #[OAT\Schema(
-    schema: 'UserResource',
+    schema: 'CompanyResource',
     properties: [
         new OAT\Property(
             property: 'uuid', 
-            type: 'string', 
+            type: 'integer', 
             example: '717f46a9-1d19-4527-af39-ae872c951f17'
         ),
         new OAT\Property(
             property: 'name', 
             type: 'string', 
-            example: 'John Doe'
+            example: 'My Company Ltd'
         ),
-        new OAT\Property(
-            property: 'email', 
-            type: 'string', 
-            example: 'john@example.com'
-        ),
-        new OAT\Property(
-            property: 'role', 
-            type: 'object', 
-            ref: '#/components/schemas/RoleResource'
-        ), 
         new OAT\Property(
             property: 'created_at', 
             type: 'datetime', 
@@ -37,7 +27,7 @@ use OpenApi\Attributes as OAT;
         ),
     ]
 )]
-class UserResource extends JsonResource
+class CompanyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -50,8 +40,6 @@ class UserResource extends JsonResource
         return [
             'uuid' => $this->uuid,
             'name' => $this->name,
-            'email' => $this->email,
-            'role' => new RoleResource($this->whenLoaded('role')),
             'created_at' => $this->created_at,
         ];
     }

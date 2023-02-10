@@ -8,7 +8,7 @@ use JsonSerializable;
 use OpenApi\Attributes as OAT;
 
 #[OAT\Schema(
-    schema: 'UserResource',
+    schema: 'EmployeeResource',
     properties: [
         new OAT\Property(
             property: 'uuid', 
@@ -16,20 +16,25 @@ use OpenApi\Attributes as OAT;
             example: '717f46a9-1d19-4527-af39-ae872c951f17'
         ),
         new OAT\Property(
-            property: 'name', 
-            type: 'string', 
-            example: 'John Doe'
+            property: 'first_name',
+            type: 'string',
+            example: 'John'
         ),
         new OAT\Property(
-            property: 'email', 
+            property: 'last_name',
             type: 'string', 
-            example: 'john@example.com'
+            example: 'Doe'
         ),
         new OAT\Property(
-            property: 'role', 
+            property: 'company', 
             type: 'object', 
-            ref: '#/components/schemas/RoleResource'
-        ), 
+            ref: '#/components/schemas/CompanyResource'
+        ),
+        new OAT\Property(
+            property: 'skills', 
+            type: 'object', 
+            ref: '#/components/schemas/SkillResource'
+        ),
         new OAT\Property(
             property: 'created_at', 
             type: 'datetime', 
@@ -37,7 +42,7 @@ use OpenApi\Attributes as OAT;
         ),
     ]
 )]
-class UserResource extends JsonResource
+class EmployeeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -49,9 +54,10 @@ class UserResource extends JsonResource
     {
         return [
             'uuid' => $this->uuid,
-            'name' => $this->name,
-            'email' => $this->email,
-            'role' => new RoleResource($this->whenLoaded('role')),
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'company' => new CompanyResource($this->whenLoaded('company')),
+            'skills' => CompanyResource::collection($this->whenLoaded('skills')),
             'created_at' => $this->created_at,
         ];
     }

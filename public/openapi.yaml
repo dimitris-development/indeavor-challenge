@@ -8,70 +8,6 @@ servers:
     url: 'http://localhost'
     description: 'Local API server'
 paths:
-  /api/admin/login:
-    post:
-      tags:
-        - adminAuth
-      summary: 'Login an admin'
-      description: 'Login an admin.'
-      operationId: Admin.AuthController.login
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminLoginRequest'
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LoggedInAdminResource'
-        '422':
-          description: 'Unprocessable entity'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationError'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                properties:
-                  message: { type: string, example: 'Invalid credentials.' }
-                type: object
-  /api/admin/logout:
-    post:
-      tags:
-        - adminAuth
-      summary: 'Logout an admin'
-      description: 'Logout an admin.'
-      operationId: Admin.AuthController.logout
-      responses:
-        '204':
-          description: 'No content'
-      security:
-        -
-          BearerToken: []
-  /api/admin/profile:
-    get:
-      tags:
-        - adminProfile
-      summary: me
-      description: 'Get the authenticated admin.'
-      operationId: Admin.ProfileController.me
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AdminResource'
-      security:
-        -
-          BearerToken: []
   /api/signup:
     post:
       tags:
@@ -183,19 +119,6 @@ components:
                 example: 'Error message 2'
           type: object
       type: object
-    AdminLoginRequest:
-      required:
-        - email
-        - password
-      properties:
-        email:
-          type: string
-          format: email
-          example: root@admin.com
-        password:
-          type: string
-          example: '123456'
-      type: object
     LoginRequest:
       required:
         - email
@@ -239,32 +162,38 @@ components:
           type: string
           example: bearer
       type: object
-    AdminResource:
+    CompanyResource:
       properties:
-        id:
+        uuid:
           type: integer
-          example: 1
+          example: 717f46a9-1d19-4527-af39-ae872c951f17
         name:
           type: string
-          example: Admin
-        email:
-          type: string
-          example: root@admin.com
-        avatar_url:
-          type: string
-          example: 'https://someplace.com/avatar'
-          nullable: true
+          example: 'My Company Ltd'
         created_at:
           type: string
           format: date-time
           example: '2022-08-27T16:14:46.000000Z'
       type: object
-    LoggedInAdminResource:
+    EmployeeResource:
       properties:
-        admin:
-          $ref: '#/components/schemas/AdminResource'
-        token:
-          $ref: '#/components/schemas/AccessTokenResource'
+        uuid:
+          type: string
+          example: 717f46a9-1d19-4527-af39-ae872c951f17
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
+        company:
+          $ref: '#/components/schemas/CompanyResource'
+        skills:
+          $ref: '#/components/schemas/SkillResource'
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-08-27T16:14:46.000000Z'
       type: object
     LoggedInUserResource:
       properties:
@@ -273,21 +202,48 @@ components:
         token:
           $ref: '#/components/schemas/AccessTokenResource'
       type: object
+    RoleResource:
+      properties:
+        uuid:
+          type: string
+          example: 717f46a9-1d19-4527-af39-ae872c951f17
+        name:
+          type: string
+          example: Admin
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-08-27T16:14:46.000000Z'
+      type: object
+    SkillResource:
+      properties:
+        uuid:
+          type: integer
+          example: 717f46a9-1d19-4527-af39-ae872c951f17
+        name:
+          type: string
+          example: 'My Skill'
+        description:
+          type: string
+          example: 'My Description'
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-08-27T16:14:46.000000Z'
+      type: object
     UserResource:
       properties:
-        id:
-          type: integer
-          example: 1
+        uuid:
+          type: string
+          example: 717f46a9-1d19-4527-af39-ae872c951f17
         name:
           type: string
           example: 'John Doe'
         email:
           type: string
           example: john@example.com
-        avatar_url:
-          type: string
-          example: 'https://someplace.com/avatar'
-          nullable: true
+        role:
+          $ref: '#/components/schemas/RoleResource'
         created_at:
           type: string
           format: date-time
@@ -303,11 +259,5 @@ tags:
     name: auth
     description: 'User authentication'
   -
-    name: adminAuth
-    description: 'Admin authentication'
-  -
     name: profile
     description: 'User profile'
-  -
-    name: adminProfile
-    description: 'Admin profile'
