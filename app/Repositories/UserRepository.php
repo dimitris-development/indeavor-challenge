@@ -9,7 +9,7 @@ class UserRepository extends BaseRepository
     /**
      * Create a new repository instance.
      *
-     * @param  User  $user
+     * @param User $user
      * @return void
      */
     public function __construct(User $user)
