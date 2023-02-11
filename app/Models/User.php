@@ -28,6 +28,10 @@ class User extends Authenticatable
         return $this->hasOne(Company::class);
     }
 
+    public function hasRole($role) {
+        return array_in($role, UserRoleEnum::cases());
+    }
+
     protected $casts = [
         'role' => UserRoleEnum::class
     ];
