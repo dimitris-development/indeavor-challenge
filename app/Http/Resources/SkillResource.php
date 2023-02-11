@@ -12,7 +12,7 @@ use OpenApi\Attributes as OAT;
     properties: [
         new OAT\Property(
             property: 'uuid', 
-            type: 'integer', 
+            type: 'string', 
             example: '717f46a9-1d19-4527-af39-ae872c951f17'
         ),
         new OAT\Property(

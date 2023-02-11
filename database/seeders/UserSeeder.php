@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\Enums\UserRoleEnum;
 
 class UserSeeder extends Seeder
 {
@@ -23,7 +24,7 @@ class UserSeeder extends Seeder
                 'uuid' => (string) Str::uuid(),
                 'email' => 'dimitris@example.com',
                 'password' => Hash::make('123456'),
-                'role_id' => 2,
+                'role' => UserRoleEnum::Scheduler,
                 'company_id' => 1
             ],
             [
@@ -32,7 +33,7 @@ class UserSeeder extends Seeder
                 'uuid' => (string) Str::uuid(),
                 'email' => 'admin@example.com',
                 'password' => Hash::make('123456'),
-                'role_id' => 1,
+                'role' => UserRoleEnum::Admin,
                 'company_id' => 2
             ]
         ]);

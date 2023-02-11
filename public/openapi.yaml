@@ -100,6 +100,11 @@ paths:
           BearerToken: []
 components:
   schemas:
+    UserRoleEnum:
+      type: string
+      enum:
+        - Admin
+        - Scheduler
     ValidationError:
       properties:
         message:
@@ -134,11 +139,15 @@ components:
       type: object
     RegisterRequest:
       required:
+        - company_uuid
         - name
         - email
         - password
         - password_confirmation
       properties:
+        company_uuid:
+          type: string
+          example: 717f46a9-1d19-4527-af39-ae872c951f17
         name:
           type: string
           example: 'John Doe'
@@ -165,7 +174,7 @@ components:
     CompanyResource:
       properties:
         uuid:
-          type: integer
+          type: string
           example: 717f46a9-1d19-4527-af39-ae872c951f17
         name:
           type: string
@@ -202,23 +211,10 @@ components:
         token:
           $ref: '#/components/schemas/AccessTokenResource'
       type: object
-    RoleResource:
-      properties:
-        uuid:
-          type: string
-          example: 717f46a9-1d19-4527-af39-ae872c951f17
-        name:
-          type: string
-          example: Admin
-        created_at:
-          type: string
-          format: date-time
-          example: '2022-08-27T16:14:46.000000Z'
-      type: object
     SkillResource:
       properties:
         uuid:
-          type: integer
+          type: string
           example: 717f46a9-1d19-4527-af39-ae872c951f17
         name:
           type: string
@@ -243,7 +239,7 @@ components:
           type: string
           example: john@example.com
         role:
-          $ref: '#/components/schemas/RoleResource'
+          $ref: '#/components/schemas/UserRoleEnum'
         created_at:
           type: string
           format: date-time

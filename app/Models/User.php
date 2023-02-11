@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Enums\UserRoleEnum;
 
 class User extends Authenticatable
 {
@@ -26,4 +27,8 @@ class User extends Authenticatable
     public function company() {
         return $this->hasOne(Company::class);
     }
+
+    protected $casts = [
+        'role' => UserRoleEnum::class
+    ];
 }
