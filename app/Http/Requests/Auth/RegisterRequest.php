@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use OpenApi\Attributes as OAT;
 
 #[OAT\Schema(
-    schema: 'SignupRequest',
+    schema: 'RegisterRequest',
     required: ['name', 'email', 'password', 'password_confirmation'],
     properties: [
         new OAT\Property(
@@ -32,7 +32,7 @@ use OpenApi\Attributes as OAT;
         ),
     ]
 )]
-class SignupRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

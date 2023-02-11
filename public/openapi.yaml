@@ -12,15 +12,15 @@ paths:
     post:
       tags:
         - auth
-      summary: 'Signup a user'
-      description: 'Signup a user.'
+      summary: 'Register a user'
+      description: 'Register a user.'
       operationId: AuthController.signup
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SignupRequest'
+              $ref: '#/components/schemas/RegisterRequest'
       responses:
         '201':
           description: Created
@@ -132,7 +132,7 @@ components:
           type: string
           example: '123456'
       type: object
-    SignupRequest:
+    RegisterRequest:
       required:
         - name
         - email

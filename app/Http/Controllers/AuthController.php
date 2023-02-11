@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\SignupRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\LoggedInUserResource;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
@@ -28,20 +28,19 @@ class AuthController extends Controller
     }
 
     /**
-     * Signup a user.
+     * Register a user.
      *
-     * @param  SignupRequest  $request
+     * @param  RegisterRequest  $request
      * @return JsonResponse
      */
     #[OAT\Post(
         tags: ['auth'],
         path: '/api/signup',
-        summary: 'Signup a user',
+        summary: 'Register a user',
         operationId: 'AuthController.signup',
         requestBody: new OAT\RequestBody(
             required: true,
-            content: new OAT\JsonContent(ref: '#/components/schemas/SignupRequest')
-
+            content: new OAT\JsonContent(ref: '#/components/schemas/RegisterRequest')
         ),
         responses: [
             new OAT\Response(
@@ -56,7 +55,7 @@ class AuthController extends Controller
             ),
         ]
     )]
-    public function signup(SignupRequest $request): JsonResponse
+    public function signup(RegisterRequest $request): JsonResponse
     {
         $user = $this->authService->signupUser($request);
 

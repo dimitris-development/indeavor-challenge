@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\SignupRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -23,12 +23,12 @@ class AuthService
     }
 
     /**
-     * Signup a user.
+     * Register a user.
      *
-     * @param  SignupRequest  $request
+     * @param  RegisterRequest  $request
      * @return User
      */
-    public function signupUser(SignupRequest $request): User
+    public function signupUser(RegisterRequest $request): User
     {
         $user = $this->userService->storeUser([
             'name' => $request->name,

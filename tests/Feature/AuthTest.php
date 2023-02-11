@@ -41,7 +41,7 @@ class AuthTest extends TestCase
      *
      * @return void
      */
-    public function testAUserCanSignupSuccessfully()
+    public function testAUserCanRegisterSuccessfully()
     {
 
         $request = [
@@ -84,7 +84,7 @@ class AuthTest extends TestCase
      *
      * @return void
      */
-    public function testAUserCanNotSignupWithoutRequiredInput()
+    public function testAUserCanNotRegisterWithoutRequiredInput()
     {
         $this
             ->json('POST', $this->routes['signup'], [])
@@ -99,7 +99,7 @@ class AuthTest extends TestCase
      *
      * @return void
      */
-    public function testAUserCanNotSignupWithConflictingEmail()
+    public function testAUserCanNotRegisterWithConflictingEmail()
     {
         $user = User::factory()->create();
 
