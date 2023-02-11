@@ -73,7 +73,7 @@ class AuthController extends Controller
     )]
     public function login(LoginRequest $request): JsonResponse
     {
-        $user = $this->authService->loginUser($request);
+        $user = $this->authService->login($request);
 
         return Response::json(new LoggedInUserResource($user));
     }
@@ -99,7 +99,7 @@ class AuthController extends Controller
     )]
     public function logout(Request $request): JsonResponse
     {
-        $this->authService->logoutUser($request->user());
+        $this->authService->logout($request->user());
 
         return Response::json(null, HttpResponse::HTTP_NO_CONTENT);
     }

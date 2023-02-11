@@ -16,4 +16,14 @@ class Employee extends Model
     public function skills() {
         return $this->belongsToMany(Skill::class);
     }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 }

@@ -24,7 +24,7 @@ class UserService
      * @param  array  $data
      * @return User
      */
-    public function storeUser(array $data): User
+    public function store(array $data): User
     {
         return $this->userRepository->create($data);
     }

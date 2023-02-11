@@ -1,39 +1,8 @@
 openapi: 3.0.0
 info:
-  title: Pandora
-  description: "## Introduction\n\n API documentation for Pandora - REST API starter kit powered by Laravel, OpenAPI, Sanctum.\n\n- [GitHub](https://github.com/arifszn/pandora)\n- [MIT License](https://github.com/arifszn/pandora/blob/main/LICENSE)"
+  title: 'Indeavor Employee Management'
   version: 1.0.0
-servers:
-  -
-    url: 'http://localhost'
-    description: 'Local API server'
 paths:
-  /api/register:
-    post:
-      tags:
-        - auth
-      summary: 'Register a user'
-      description: 'Register a user.'
-      operationId: AuthController.register
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RegisterRequest'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LoggedInUserResource'
-        '422':
-          description: 'Unprocessable entity'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationError'
   /api/login:
     post:
       tags:
@@ -81,29 +50,13 @@ paths:
       security:
         -
           BearerToken: []
-  /api/profile:
-    get:
-      tags:
-        - profile
-      summary: me
-      description: 'Get the authenticated user.'
-      operationId: ProfileController.me
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserResource'
-      security:
-        -
-          BearerToken: []
 components:
   schemas:
     UserRoleEnum:
       type: string
       enum:
         - Admin
+        - CompanyAdmin
         - Scheduler
     ValidationError:
       properties:
@@ -137,31 +90,6 @@ components:
           type: string
           example: '123456'
       type: object
-    RegisterRequest:
-      required:
-        - company_uuid
-        - name
-        - email
-        - password
-        - password_confirmation
-      properties:
-        company_uuid:
-          type: string
-          example: 717f46a9-1d19-4527-af39-ae872c951f17
-        name:
-          type: string
-          example: 'John Doe'
-        email:
-          type: string
-          format: email
-          example: john@example.com
-        password:
-          type: string
-          example: '123456'
-        password_confirmation:
-          type: string
-          example: '123456'
-      type: object
     AccessTokenResource:
       properties:
         access_token:
@@ -170,19 +98,6 @@ components:
         type:
           type: string
           example: bearer
-      type: object
-    CompanyResource:
-      properties:
-        uuid:
-          type: string
-          example: 717f46a9-1d19-4527-af39-ae872c951f17
-        name:
-          type: string
-          example: 'My Company Ltd'
-        created_at:
-          type: string
-          format: date-time
-          example: '2022-08-27T16:14:46.000000Z'
       type: object
     EmployeeResource:
       properties:
@@ -195,8 +110,6 @@ components:
         last_name:
           type: string
           example: Doe
-        company:
-          $ref: '#/components/schemas/CompanyResource'
         skills:
           $ref: '#/components/schemas/SkillResource'
         created_at:
@@ -254,6 +167,3 @@ tags:
   -
     name: auth
     description: 'User authentication'
-  -
-    name: profile
-    description: 'User profile'

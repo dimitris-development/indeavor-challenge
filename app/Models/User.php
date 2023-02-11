@@ -35,4 +35,14 @@ class User extends Authenticatable
     protected $casts = [
         'role' => UserRoleEnum::class
     ];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 }

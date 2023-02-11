@@ -26,11 +26,6 @@ use OpenApi\Attributes as OAT;
             example: 'Doe'
         ),
         new OAT\Property(
-            property: 'company', 
-            type: 'object', 
-            ref: '#/components/schemas/CompanyResource'
-        ),
-        new OAT\Property(
             property: 'skills', 
             type: 'object', 
             ref: '#/components/schemas/SkillResource'
@@ -56,8 +51,7 @@ class EmployeeResource extends JsonResource
             'uuid' => $this->uuid,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'company' => new CompanyResource($this->whenLoaded('company')),
-            'skills' => CompanyResource::collection($this->whenLoaded('skills')),
+            'skills' => SkillResource::collection($this->whenLoaded('skills')),
             'created_at' => $this->created_at,
         ];
     }

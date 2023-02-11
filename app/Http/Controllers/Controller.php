@@ -11,10 +11,8 @@ use OpenApi\Attributes as OAT;
 #[
     OAT\Info(
         version: '1.0.0',
-        title: 'Pandora',
-        description: "## Introduction\n\n API documentation for Pandora - REST API starter kit powered by Laravel, OpenAPI, Sanctum.\n\n- [GitHub](https://github.com/arifszn/pandora)\n- [MIT License](https://github.com/arifszn/pandora/blob/main/LICENSE)",
+        title: 'Indeavor Employee Management',
     ),
-    OAT\Server(url: 'http://localhost', description: 'Local API server'),
     OAT\SecurityScheme(
         securityScheme: 'BearerToken',
         scheme: 'bearer',
@@ -22,7 +20,6 @@ use OpenApi\Attributes as OAT;
         type: 'http'
     ),
     OAT\Tag(name: 'auth', description: 'User authentication'),
-    OAT\Tag(name: 'profile', description: 'User profile'),
     OAT\Schema(
         schema: 'ValidationError',
         properties: [

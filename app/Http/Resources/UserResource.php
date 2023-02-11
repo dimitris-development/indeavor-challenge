@@ -29,6 +29,7 @@ use OpenApi\Attributes as OAT;
             property: 'role', 
             type: 'string', 
             ref: '#/components/schemas/UserRoleEnum',
+            example: 'admin'
         ),
         new OAT\Property(
             property: 'created_at', 

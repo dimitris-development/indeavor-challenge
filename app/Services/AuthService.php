@@ -30,7 +30,7 @@ class AuthService
      * @throws HttpException
      * @throws NotFoundHttpException
      */
-    public function loginUser(LoginRequest $request): User
+    public function login(LoginRequest $request): User
     {
         $user = $this->userService->getByEmail($request->email);
 
@@ -47,7 +47,7 @@ class AuthService
      * @param  User  $user
      * @return bool
      */
-    public function logoutUser(User $user): bool
+    public function logout(User $user): bool
     {
         return $user->currentAccessToken()->delete();
     }
