@@ -57,7 +57,6 @@ class RouteServiceProvider extends ServiceProvider
             'middleware' => ['auth:user'],
         ], function () {
             require base_path('routes/api/company/employee.php');
-            require base_path('routes/api/company/user.php');
         });
     }
 
