@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -20,23 +19,6 @@ class AuthService
     public function __construct(private UserService $userService)
     {
         //
-    }
-
-    /**
-     * Register a user.
-     *
-     * @param  RegisterRequest  $request
-     * @return User
-     */
-    public function registerUser(RegisterRequest $request): User
-    {
-        $user = $this->userService->storeUser([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return $user;
     }
 
     /**

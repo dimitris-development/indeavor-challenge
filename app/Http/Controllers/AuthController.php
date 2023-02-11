@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\LoggedInUserResource;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
@@ -25,41 +24,6 @@ class AuthController extends Controller
     public function __construct(private AuthService $authService)
     {
         //
-    }
-
-    /**
-     * Register a user.
-     *
-     * @param  RegisterRequest  $request
-     * @return JsonResponse
-     */
-    #[OAT\Post(
-        tags: ['auth'],
-        path: '/api/register',
-        summary: 'Register a user',
-        operationId: 'AuthController.register',
-        requestBody: new OAT\RequestBody(
-            required: true,
-            content: new OAT\JsonContent(ref: '#/components/schemas/RegisterRequest')
-        ),
-        responses: [
-            new OAT\Response(
-                response: HttpResponse::HTTP_CREATED,
-                description: 'Created',
-                content: new OAT\JsonContent(ref: '#/components/schemas/LoggedInUserResource')
-            ),
-            new OAT\Response(
-                response: HttpResponse::HTTP_UNPROCESSABLE_ENTITY,
-                description: 'Unprocessable entity',
-                content: new OAT\JsonContent(ref: '#/components/schemas/ValidationError')
-            ),
-        ]
-    )]
-    public function register(RegisterRequest $request): JsonResponse
-    {
-        $user = $this->authService->registerUser($request);
-
-        return Response::json(new LoggedInUserResource($user), HttpResponse::HTTP_CREATED);
     }
 
     /**

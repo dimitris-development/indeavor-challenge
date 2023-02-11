@@ -30,97 +30,9 @@ class AuthTest extends TestCase
         parent::setUp();
 
         $this->routes = [
-            'register' => '/api/register',
             'login' => '/api/login',
             'logout' => '/api/logout',
         ];
-    }
-
-    /**
-     * A user can register successfully.
-     *
-     * @return void
-     */
-    public function testAUserCanRegisterSuccessfully()
-    {
-
-        $request = [
-            'email' => $this->faker->safeEmail(),
-            'name' => $this->faker->name(),
-            'password' => '123456',
-            'password_confirmation' => '123456',
-        ];
-
-        $response = $this
-            ->json('POST', $this->routes['register'], $request)
-            ->assertStatus(Response::HTTP_CREATED)
-            ->assertJsonStructure([
-                'user' => [
-                    'id',
-                    'name',
-                    'email',
-                    'avatar_url',
-                    'created_at',
-                ],
-                'token' => [
-                    'access_token',
-                    'type',
-                ],
-            ])
-            ->assertJson([
-                'user' => [
-                    'email' => $request['email'],
-                    'name' => $request['name'],
-                    'avatar_url' => null,
-                ],
-
-            ]);
-
-        $this->assertInstanceOf(LoggedInUserResource::class, $response->getOriginalContent());
-    }
-
-    /**
-     * A user can not register without required input.
-     *
-     * @return void
-     */
-    public function testAUserCanNotRegisterWithoutRequiredInput()
-    {
-        $this
-            ->json('POST', $this->routes['register'], [])
-            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJsonValidationErrorFor('name')
-            ->assertJsonValidationErrorFor('email')
-            ->assertJsonValidationErrorFor('password');
-    }
-
-    /**
-     * A user can not register with conflicting email.
-     *
-     * @return void
-     */
-    public function testAUserCanNotRegisterWithConflictingEmail()
-    {
-        $user = User::factory()->create();
-
-        $request = [
-            'email' => $user->email,
-            'name' => $user->name,
-            'password' => '123456',
-            'password_password' => '123456',
-        ];
-
-        $this
-            ->json('POST', $this->routes['register'], $request)
-            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJsonValidationErrorFor('email')
-            ->assertJson([
-                'errors' => [
-                    'email' => [
-                        'The email has already been taken.',
-                    ],
-                ],
-            ]);
     }
 
     /**
