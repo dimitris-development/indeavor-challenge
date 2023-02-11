@@ -35,9 +35,9 @@ class AuthController extends Controller
      */
     #[OAT\Post(
         tags: ['auth'],
-        path: '/api/signup',
+        path: '/api/register',
         summary: 'Register a user',
-        operationId: 'AuthController.signup',
+        operationId: 'AuthController.register',
         requestBody: new OAT\RequestBody(
             required: true,
             content: new OAT\JsonContent(ref: '#/components/schemas/RegisterRequest')
@@ -55,9 +55,9 @@ class AuthController extends Controller
             ),
         ]
     )]
-    public function signup(RegisterRequest $request): JsonResponse
+    public function register(RegisterRequest $request): JsonResponse
     {
-        $user = $this->authService->signupUser($request);
+        $user = $this->authService->registerUser($request);
 
         return Response::json(new LoggedInUserResource($user), HttpResponse::HTTP_CREATED);
     }

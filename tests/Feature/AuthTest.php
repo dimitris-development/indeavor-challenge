@@ -30,14 +30,14 @@ class AuthTest extends TestCase
         parent::setUp();
 
         $this->routes = [
-            'signup' => '/api/signup',
+            'register' => '/api/register',
             'login' => '/api/login',
             'logout' => '/api/logout',
         ];
     }
 
     /**
-     * A user can signup successfully.
+     * A user can register successfully.
      *
      * @return void
      */
@@ -52,7 +52,7 @@ class AuthTest extends TestCase
         ];
 
         $response = $this
-            ->json('POST', $this->routes['signup'], $request)
+            ->json('POST', $this->routes['register'], $request)
             ->assertStatus(Response::HTTP_CREATED)
             ->assertJsonStructure([
                 'user' => [
@@ -80,14 +80,14 @@ class AuthTest extends TestCase
     }
 
     /**
-     * A user can not signup without required input.
+     * A user can not register without required input.
      *
      * @return void
      */
     public function testAUserCanNotRegisterWithoutRequiredInput()
     {
         $this
-            ->json('POST', $this->routes['signup'], [])
+            ->json('POST', $this->routes['register'], [])
             ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
             ->assertJsonValidationErrorFor('name')
             ->assertJsonValidationErrorFor('email')
@@ -95,7 +95,7 @@ class AuthTest extends TestCase
     }
 
     /**
-     * A user can not signup with conflicting email.
+     * A user can not register with conflicting email.
      *
      * @return void
      */
@@ -111,7 +111,7 @@ class AuthTest extends TestCase
         ];
 
         $this
-            ->json('POST', $this->routes['signup'], $request)
+            ->json('POST', $this->routes['register'], $request)
             ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
             ->assertJsonValidationErrorFor('email')
             ->assertJson([

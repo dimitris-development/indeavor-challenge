@@ -28,7 +28,7 @@ class AuthService
      * @param  RegisterRequest  $request
      * @return User
      */
-    public function signupUser(RegisterRequest $request): User
+    public function registerUser(RegisterRequest $request): User
     {
         $user = $this->userService->storeUser([
             'name' => $request->name,

@@ -8,13 +8,13 @@ servers:
     url: 'http://localhost'
     description: 'Local API server'
 paths:
-  /api/signup:
+  /api/register:
     post:
       tags:
         - auth
       summary: 'Register a user'
       description: 'Register a user.'
-      operationId: AuthController.signup
+      operationId: AuthController.register
       requestBody:
         required: true
         content:
