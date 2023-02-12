@@ -52,8 +52,7 @@ class SkillController extends Controller
     )]
     public function index()
     {
-        $skills = Skill::all();
-        return Response::json(SkillResource::collection($skills));
+        return Response::json(SkillResource::collection(Skill::all()));
     }
 
     /**
@@ -64,7 +63,7 @@ class SkillController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
