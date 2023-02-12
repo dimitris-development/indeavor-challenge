@@ -34,7 +34,6 @@ class AuthController extends Controller
         requestBody: new OAT\RequestBody(
             required: true,
             content: new OAT\JsonContent(ref: '#/components/schemas/LoginRequest')
-
         ),
         responses: [
             new OAT\Response(

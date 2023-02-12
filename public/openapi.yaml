@@ -115,6 +115,41 @@ paths:
       security:
         -
           BearerToken: []
+    post:
+      tags:
+        - skills
+      summary: 'Update a skill'
+      description: 'Update the specified resource in storage.'
+      operationId: SkillController.update
+      parameters:
+        -
+          name: skill_uuid
+          in: path
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSkillRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillResource'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'Invalid credentials.' }
+                type: object
+      security:
+        -
+          BearerToken: []
 components:
   schemas:
     UserRoleEnum:
@@ -153,6 +188,19 @@ components:
         password:
           type: string
           example: '123456'
+      type: object
+    UpdateSkillRequest:
+      required:
+        - name
+        - description
+      properties:
+        name:
+          description: 'Get the validation rules that apply to the request.'
+          type: string
+          example: 'My Skill name'
+        description:
+          type: string
+          example: 'My Skill description'
       type: object
     AccessTokenResource:
       properties:
