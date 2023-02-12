@@ -47,6 +47,71 @@ paths:
       responses:
         '204':
           description: 'No content'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'Invalid credentials.' }
+                type: object
+      security:
+        -
+          BearerToken: []
+  /api/skills:
+    get:
+      tags:
+        - skills
+      summary: 'Show skills'
+      description: 'Display a listing of the resource.'
+      operationId: SkillController.index
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SkillResource'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'Invalid credentials.' }
+                type: object
+      security:
+        -
+          BearerToken: []
+  '/api/skills/{skill_uuid}':
+    get:
+      tags:
+        - skills
+      summary: 'Show a specific skill'
+      description: 'Display a listing of the resource.'
+      operationId: SkillController.show
+      parameters:
+        -
+          name: skill_uuid
+          in: path
+          required: true
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillResource'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'Invalid credentials.' }
+                type: object
       security:
         -
           BearerToken: []
@@ -56,7 +121,6 @@ components:
       type: string
       enum:
         - Admin
-        - CompanyAdmin
         - Scheduler
     ValidationError:
       properties:
@@ -153,10 +217,6 @@ components:
           example: john@example.com
         role:
           $ref: '#/components/schemas/UserRoleEnum'
-        created_at:
-          type: string
-          format: date-time
-          example: '2022-08-27T16:14:46.000000Z'
       type: object
   securitySchemes:
     BearerToken:
@@ -167,3 +227,6 @@ tags:
   -
     name: auth
     description: 'User authentication'
+  -
+    name: skills
+    description: Skills

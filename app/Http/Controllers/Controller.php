@@ -20,6 +20,7 @@ use OpenApi\Attributes as OAT;
         type: 'http'
     ),
     OAT\Tag(name: 'auth', description: 'User authentication'),
+    OAT\Tag(name: 'skills', description: 'Skills'),
     OAT\Schema(
         schema: 'ValidationError',
         properties: [

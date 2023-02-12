@@ -5,6 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSkillRequest;
 use App\Http\Requests\UpdateSkillRequest;
 use App\Models\Skill;
+use OpenApi\Attributes as OAT;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Facades\Response;
+use App\Http\Resources\SkillResource;
+
 
 class SkillController extends Controller
 {
@@ -13,62 +20,105 @@ class SkillController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    #[OAT\Get(
+        tags: ['skills'],
+        path: '/api/skills',
+        summary: 'Show skills',
+        operationId: 'SkillController.index',
+        security: [['BearerToken' => []]],
+        responses: [
+            new OAT\Response(
+                response: HttpResponse::HTTP_OK,
+                description: 'Ok',
+                content: new OAT\JsonContent(
+                    type: 'array',
+                    items: new OAT\Items(ref: '#/components/schemas/SkillResource')
+                ) 
+            ),
+            new OAT\Response(
+                response: HttpResponse::HTTP_UNAUTHORIZED,
+                description: 'Unauthorized',
+                content: new OAT\JsonContent(
+                    properties: [
+                        new OAT\Property(
+                            property: 'message',
+                            type: 'string',
+                            example: 'Invalid credentials.'
+                        ),
+                    ]
+                )
+            ),
+        ]
+    )]
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $skills = Skill::all();
+        return Response::json(SkillResource::collection($skills));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSkillRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSkillRequest $request)
+    public function store(Request $request)
     {
         //
     }
 
     /**
-     * Display the specified resource.
+     * Display a listing of the resource.
      *
-     * @param  \App\Models\Skill  $skill
      * @return \Illuminate\Http\Response
      */
+    #[OAT\Get(
+        tags: ['skills'],
+        path: '/api/skills/{skill_uuid}',
+        summary: 'Show a specific skill',
+        operationId: 'SkillController.show',
+        security: [['BearerToken' => []]],
+        parameters: [
+            new OAT\Parameter(
+                name: 'skill_uuid',
+                in: 'path',
+                required: true
+            )
+        ],
+        responses: [
+            new OAT\Response(
+                response: HttpResponse::HTTP_OK,
+                description: 'Ok',
+                content: new OAT\JsonContent(ref: '#/components/schemas/SkillResource') 
+            ),
+            new OAT\Response(
+                response: HttpResponse::HTTP_UNAUTHORIZED,
+                description: 'Unauthorized',
+                content: new OAT\JsonContent(
+                    properties: [
+                        new OAT\Property(
+                            property: 'message',
+                            type: 'string',
+                            example: 'Invalid credentials.'
+                        ),
+                    ]
+                )
+            ),
+        ]
+    )]
     public function show(Skill $skill)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Skill  $skill
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Skill $skill)
-    {
-        //
+        return Response::json(new SkillResource($skill));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSkillRequest  $request
-     * @param  \App\Models\Skill  $skill
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSkillRequest $request, Skill $skill)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -76,10 +126,10 @@ class SkillController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Skill  $skill
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Skill $skill)
+    public function destroy($id)
     {
         //
     }
