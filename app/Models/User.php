@@ -20,14 +20,6 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function role() {
-        return $this->hasOne(Role::class);
-    }
-
-    public function company() {
-        return $this->hasOne(Company::class);
-    }
-
     public function hasRole($role) {
         return array_in($role, UserRoleEnum::cases());
     }

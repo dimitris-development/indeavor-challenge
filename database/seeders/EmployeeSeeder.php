@@ -6,6 +6,7 @@ use App\Models\Employee;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class EmployeeSeeder extends Seeder
 {
@@ -22,28 +23,32 @@ class EmployeeSeeder extends Seeder
                 'uuid' => (string) Str::uuid(),
                 'first_name' => 'Aggelikh',
                 'last_name' => 'Karatza',
-                'company_id' => 1
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
             ],
             [
                 'id' => 2,
                 'uuid' => (string) Str::uuid(),
                 'first_name' => 'Anastasia',
                 'last_name' => 'Karatza',
-                'company_id' => 2
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
             ],
             [
                 'id' => 3,
                 'uuid' => (string) Str::uuid(),
                 'first_name' => 'Philip',
                 'last_name' => 'Karatzas',
-                'company_id' => 1
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
             ],
             [
                 'id' => 4,
                 'uuid' => (string) Str::uuid(),
                 'first_name' => 'Konstantinos',
                 'last_name' => 'Maglinhs',
-                'company_id' => 2
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
             ]
         ]);
 

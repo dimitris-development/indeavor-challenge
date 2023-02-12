@@ -9,12 +9,8 @@ class Employee extends Model
 {
     use HasFactory;
 
-    public function company() {
-        return $this->hasOne(Company::class);
-    }
-
     public function skills() {
-        return $this->belongsToMany(Skill::class);
+        return $this->belongsToMany(Skill::class, 'employee_skills');
     }
 
     /**

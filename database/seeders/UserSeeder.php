@@ -25,7 +25,6 @@ class UserSeeder extends Seeder
                 'email' => 'dimitris@example.com',
                 'password' => Hash::make('123456'),
                 'role' => UserRoleEnum::Scheduler,
-                'company_id' => 1
             ],
             [
                 'id' => 2,
@@ -34,7 +33,6 @@ class UserSeeder extends Seeder
                 'email' => 'admin@example.com',
                 'password' => Hash::make('123456'),
                 'role' => UserRoleEnum::Admin,
-                'company_id' => 2
             ]
         ]);
     }
