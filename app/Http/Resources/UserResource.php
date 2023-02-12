@@ -29,13 +29,7 @@ use OpenApi\Attributes as OAT;
             property: 'role', 
             type: 'string', 
             ref: '#/components/schemas/UserRoleEnum',
-            example: 'admin'
-        ),
-        new OAT\Property(
-            property: 'created_at', 
-            type: 'datetime', 
-            example: '2022-08-27T16:14:46.000000Z'
-        ),
+        )
     ]
 )]
 class UserResource extends JsonResource
@@ -53,7 +47,6 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'role' => $this->role,
-            'created_at' => $this->created_at,
         ];
     }
 }

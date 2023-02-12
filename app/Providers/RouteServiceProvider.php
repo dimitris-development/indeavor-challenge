@@ -25,7 +25,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api')
                 ->group(function () {
                     $this->getUserRoutes();
-                    $this->getCompanyRoutes();
+                    $this->getSkillRoutes();
                 });
 
             Route::middleware('web')
@@ -43,20 +43,14 @@ class RouteServiceProvider extends ServiceProvider
     private function getUserRoutes()
     {
         require base_path('routes/api/auth.php');
-
-        Route::group([
-            'middleware' => ['auth:user'],
-        ], function () {
-            require base_path('routes/api/profile.php');
-        });
     }
 
-    private function getCompanyRoutes()
+    private function getSkillRoutes()
     {
         Route::group([
             'middleware' => ['auth:user'],
         ], function () {
-            require base_path('routes/api/company/employee.php');
+            require base_path('routes/api/skills.php');
         });
     }
 
