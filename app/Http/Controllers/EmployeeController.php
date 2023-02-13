@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreSkillRequest;
-use App\Http\Requests\UpdateSkillRequest;
-use App\Models\Skill;
+use App\Http\Requests\StoreEmployeeRequest;
+use App\Http\Requests\UpdateEmployeeRequest;
+use App\Models\Employee;
 use OpenApi\Attributes as OAT;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Response;
-use App\Http\Resources\SkillResource;
+use App\Http\Resources\EmployeeResource;
 use Illuminate\Support\Str;
 
-class SkillController extends Controller
+class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,10 +21,10 @@ class SkillController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OAT\Get(
-        tags: ['skills'],
-        path: '/api/skills',
-        summary: 'Show skills',
-        operationId: 'SkillController.index',
+        tags: ['employees'],
+        path: '/api/employees',
+        summary: 'Show employees',
+        operationId: 'EmployeeController.index',
         security: [['BearerToken' => []]],
         responses: [
             new OAT\Response(
@@ -32,7 +32,7 @@ class SkillController extends Controller
                 description: 'Ok',
                 content: new OAT\JsonContent(
                     type: 'array',
-                    items: new OAT\Items(ref: '#/components/schemas/SkillResource')
+                    items: new OAT\Items(ref: '#/components/schemas/EmployeeResource')
                 ) 
             ),
             new OAT\Response(
@@ -52,7 +52,7 @@ class SkillController extends Controller
     )]
     public function index()
     {
-        return Response::json(SkillResource::collection(Skill::all()));
+        return Response::json(EmployeeResource::collection(Employee::all()));
     }
 
     /**
@@ -62,20 +62,20 @@ class SkillController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OAT\Post(
-        tags: ['skills'],
-        path: '/api/skills',
-        summary: 'Create a skill',
-        operationId: 'SkillController.store',
+        tags: ['employees'],
+        path: '/api/employees',
+        summary: 'Create a employee',
+        operationId: 'EmployeeController.store',
         security: [['BearerToken' => []]],
         requestBody: new OAT\RequestBody(
             required: true,
-            content: new OAT\JsonContent(ref: '#/components/schemas/StoreSkillRequest')
+            content: new OAT\JsonContent(ref: '#/components/schemas/StoreEmployeeRequest')
         ),
         responses: [
             new OAT\Response(
                 response: HttpResponse::HTTP_OK,
                 description: 'Ok',
-                content: new OAT\JsonContent(ref: '#/components/schemas/SkillResource') 
+                content: new OAT\JsonContent(ref: '#/components/schemas/EmployeeResource') 
             ),
             new OAT\Response(
                 response: HttpResponse::HTTP_UNAUTHORIZED,
@@ -92,16 +92,16 @@ class SkillController extends Controller
             ),
         ]
     )]
-    public function store(StoreSkillRequest $request)
+    public function store(StoreEmployeeRequest $request)
     {
-        $validated = $request->safe()->only(['name', 'description']);
-        $skill = Skill::create([
+        $validated = $request->safe()->only(['first_name', 'last_name']);
+        $employee = Employee::create([
             'uuid' => (string) Str::uuid(),
-            'name' => $validated['name'],
-            'description' =>  $validated['description'],
+            'first_name' => $validated['first_name'],
+            'last_name' =>  $validated['last_name'],
         ]);
 
-        return Response::json(new SkillResource($skill));
+        return Response::json(new EmployeeResource($employee));
     }
 
     /**
@@ -110,14 +110,14 @@ class SkillController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OAT\Get(
-        tags: ['skills'],
-        path: '/api/skills/{skill_uuid}',
-        summary: 'Show a specific skill',
-        operationId: 'SkillController.show',
+        tags: ['employees'],
+        path: '/api/employees/{employee_uuid}',
+        summary: 'Show a specific employee',
+        operationId: 'EmployeeController.show',
         security: [['BearerToken' => []]],
         parameters: [
             new OAT\Parameter(
-                name: 'skill_uuid',
+                name: 'employee_uuid',
                 in: 'path',
                 required: true
             )
@@ -126,7 +126,7 @@ class SkillController extends Controller
             new OAT\Response(
                 response: HttpResponse::HTTP_OK,
                 description: 'Ok',
-                content: new OAT\JsonContent(ref: '#/components/schemas/SkillResource') 
+                content: new OAT\JsonContent(ref: '#/components/schemas/EmployeeResource') 
             ),
             new OAT\Response(
                 response: HttpResponse::HTTP_UNAUTHORIZED,
@@ -143,9 +143,9 @@ class SkillController extends Controller
             ),
         ]
     )]
-    public function show(Skill $skill)
+    public function show(Employee $employee)
     {
-        return Response::json(new SkillResource($skill));
+        return Response::json(new EmployeeResource($employee));
     }
 
     /**
@@ -156,27 +156,27 @@ class SkillController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OAT\Put(
-        tags: ['skills'],
-        path: '/api/skills/{skill_uuid}',
-        summary: 'Update a skill',
-        operationId: 'SkillController.update',
+        tags: ['employees'],
+        path: '/api/employees/{employee_uuid}',
+        summary: 'Update a employee',
+        operationId: 'EmployeeController.update',
         security: [['BearerToken' => []]],
         parameters: [
             new OAT\Parameter(
-                name: 'skill_uuid',
+                name: 'employee_uuid',
                 in: 'path',
                 required: true
             )
         ],
         requestBody: new OAT\RequestBody(
             required: true,
-            content: new OAT\JsonContent(ref: '#/components/schemas/UpdateSkillRequest')
+            content: new OAT\JsonContent(ref: '#/components/schemas/UpdateEmployeeRequest')
         ),
         responses: [
             new OAT\Response(
                 response: HttpResponse::HTTP_OK,
                 description: 'Ok',
-                content: new OAT\JsonContent(ref: '#/components/schemas/SkillResource') 
+                content: new OAT\JsonContent(ref: '#/components/schemas/EmployeeResource') 
             ),
             new OAT\Response(
                 response: HttpResponse::HTTP_UNAUTHORIZED,
@@ -193,14 +193,14 @@ class SkillController extends Controller
             ),
         ]
     )]
-    public function update(UpdateSkillRequest $request, Skill $skill)
+    public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        $validated = $request->safe()->only(['name', 'description']);
-        $skill->name = $validated['name'];
-        $skill->description = $validated['description'];
-        $skill->save();
+        $validated = $request->safe()->only(['first_name', 'last_name']);
+        $employee->first_name = $validated['first_name'];
+        $employee->last_name = $validated['last_name'];
+        $employee->save();
 
-        return Response::json(new SkillResource($skill));
+        return Response::json(new EmployeeResource($employee));
     }
 
     /**
@@ -210,14 +210,14 @@ class SkillController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OAT\Delete(
-        tags: ['skills'],
-        path: '/api/skills/{skill_uuid}',
-        summary: 'Delete a skill',
-        operationId: 'SkillController.destroy',
+        tags: ['employees'],
+        path: '/api/employees/{employee_uuid}',
+        summary: 'Delete a employee',
+        operationId: 'EmployeeController.destroy',
         security: [['BearerToken' => []]],
         parameters: [
             new OAT\Parameter(
-                name: 'skill_uuid',
+                name: 'employee_uuid',
                 in: 'path',
                 required: true
             )
@@ -225,7 +225,7 @@ class SkillController extends Controller
         responses: [
             new OAT\Response(
                 response: HttpResponse::HTTP_NO_CONTENT,
-                description: 'Ok',
+                description: 'No content'
             ),
             new OAT\Response(
                 response: HttpResponse::HTTP_UNAUTHORIZED,
@@ -242,9 +242,9 @@ class SkillController extends Controller
             ),
         ]
     )]
-    public function destroy(Skill $skill)
+    public function destroy(Employee $employee)
     {
-        $skill->delete();
+        $employee->delete();
         return response()->noContent();
     }
 }

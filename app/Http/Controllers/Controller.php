@@ -21,6 +21,7 @@ use OpenApi\Attributes as OAT;
     ),
     OAT\Tag(name: 'auth', description: 'User authentication'),
     OAT\Tag(name: 'skills', description: 'Skills'),
+    OAT\Tag(name: 'employees', description: 'Employees'),
     OAT\Schema(
         schema: 'ValidationError',
         properties: [
@@ -41,7 +42,6 @@ use OpenApi\Attributes as OAT;
                     ),
                 ]
             ),
-
         ]
     )
 ]

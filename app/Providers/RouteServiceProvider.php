@@ -26,6 +26,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(function () {
                     $this->getUserRoutes();
                     $this->getSkillRoutes();
+                    $this->getEmployeeRoutes();
                 });
 
             Route::middleware('web')
@@ -45,12 +46,35 @@ class RouteServiceProvider extends ServiceProvider
         require base_path('routes/api/auth.php');
     }
 
+    /**
+     * Get the skill routes.
+     *
+     * @return void
+     *
+     * @throws BindingResolutionException
+     */
     private function getSkillRoutes()
     {
         Route::group([
             'middleware' => ['auth:user'],
         ], function () {
             require base_path('routes/api/skills.php');
+        });
+    }
+
+    /**
+     * Get the employee routes.
+     *
+     * @return void
+     *
+     * @throws BindingResolutionException
+     */
+    private function getEmployeeRoutes()
+    {
+        Route::group([
+            'middleware' => ['auth:user'],
+        ], function () {
+            require base_path('routes/api/employees.php');
         });
     }
 

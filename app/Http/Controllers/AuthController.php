@@ -12,7 +12,6 @@ use OpenApi\Attributes as OAT;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 
 class AuthController extends Controller
@@ -34,6 +33,7 @@ class AuthController extends Controller
         requestBody: new OAT\RequestBody(
             required: true,
             content: new OAT\JsonContent(ref: '#/components/schemas/LoginRequest')
+
         ),
         responses: [
             new OAT\Response(
@@ -86,7 +86,7 @@ class AuthController extends Controller
         security: [['BearerToken' => []]],
         responses: [
             new OAT\Response(
-                response: HttpResponse::HTTP_OK,
+                response: HttpResponse::HTTP_NO_CONTENT,
                 description: 'No content'
             ),
             new OAT\Response(
@@ -107,7 +107,6 @@ class AuthController extends Controller
     public function logout(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();
-
-        return Response::json(null, HttpResponse::HTTP_OK);
+        return response()->noContent();
     }
 }
