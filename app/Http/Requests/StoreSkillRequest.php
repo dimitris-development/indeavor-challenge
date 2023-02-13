@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use OpenApi\Attributes as OAT;
 
-class UpdateSkillRequest extends FormRequest
+class StoreSkillRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -13,7 +13,7 @@ class UpdateSkillRequest extends FormRequest
      * @return array<string, mixed>
      */
     #[OAT\Schema(
-        schema: 'UpdateSkillRequest',
+        schema: 'StoreSkillRequest',
         required: ['name', 'description'],
         properties: [
             new OAT\Property(
@@ -31,7 +31,7 @@ class UpdateSkillRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:skill|max:100',
+            'name' => 'required|unique:skills|max:100',
             'description' => 'required|max:255'
         ];
     }

@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Response;
 use App\Http\Resources\SkillResource;
-
+use Illuminate\Support\Str;
 
 class SkillController extends Controller
 {
@@ -61,9 +61,47 @@ class SkillController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    #[OAT\Post(
+        tags: ['skills'],
+        path: '/api/skills',
+        summary: 'Create a skill',
+        operationId: 'SkillController.store',
+        security: [['BearerToken' => []]],
+        requestBody: new OAT\RequestBody(
+            required: true,
+            content: new OAT\JsonContent(ref: '#/components/schemas/StoreSkillRequest')
+        ),
+        responses: [
+            new OAT\Response(
+                response: HttpResponse::HTTP_OK,
+                description: 'Ok',
+                content: new OAT\JsonContent(ref: '#/components/schemas/SkillResource') 
+            ),
+            new OAT\Response(
+                response: HttpResponse::HTTP_UNAUTHORIZED,
+                description: 'Unauthorized',
+                content: new OAT\JsonContent(
+                    properties: [
+                        new OAT\Property(
+                            property: 'message',
+                            type: 'string',
+                            example: 'Invalid credentials.'
+                        ),
+                    ]
+                )
+            ),
+        ]
+    )]
+    public function store(StoreSkillRequest $request)
     {
-        
+        $validated = $request->safe()->only(['name', 'description']);
+        $skill = Skill::create([
+            'uuid' => (string) Str::uuid(),
+            'name' => $validated['name'],
+            'description' =>  $validated['description'],
+        ]);
+
+        return Response::json(new SkillResource($skill));
     }
 
     /**
@@ -117,7 +155,7 @@ class SkillController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    #[OAT\Post(
+    #[OAT\Put(
         tags: ['skills'],
         path: '/api/skills/{skill_uuid}',
         summary: 'Update a skill',
@@ -171,8 +209,42 @@ class SkillController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    #[OAT\Delete(
+        tags: ['skills'],
+        path: '/api/skills/{skill_uuid}',
+        summary: 'Delete a skill',
+        operationId: 'SkillController.destroy',
+        security: [['BearerToken' => []]],
+        parameters: [
+            new OAT\Parameter(
+                name: 'skill_uuid',
+                in: 'path',
+                required: true
+            )
+        ],
+        responses: [
+            new OAT\Response(
+                response: HttpResponse::HTTP_OK,
+                description: 'Ok',
+            ),
+            new OAT\Response(
+                response: HttpResponse::HTTP_UNAUTHORIZED,
+                description: 'Unauthorized',
+                content: new OAT\JsonContent(
+                    properties: [
+                        new OAT\Property(
+                            property: 'message',
+                            type: 'string',
+                            example: 'Invalid credentials.'
+                        ),
+                    ]
+                )
+            ),
+        ]
+    )]
+    public function destroy(Skill $skill)
     {
-        //
+        $skill->delete();
+        return Response::json(null, HttpResponse::HTTP_OK);
     }
 }

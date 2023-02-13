@@ -86,7 +86,7 @@ class AuthController extends Controller
         security: [['BearerToken' => []]],
         responses: [
             new OAT\Response(
-                response: HttpResponse::HTTP_NO_CONTENT,
+                response: HttpResponse::HTTP_OK,
                 description: 'No content'
             ),
             new OAT\Response(
@@ -108,6 +108,6 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
 
-        return Response::json(null, HttpResponse::HTTP_NO_CONTENT);
+        return Response::json(null, HttpResponse::HTTP_OK);
     }
 }
