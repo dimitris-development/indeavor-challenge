@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
+use App\Http\Requests\AttachSkillRequest;
 use App\Models\Employee;
+use App\Models\Skill;
 use OpenApi\Attributes as OAT;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -145,7 +147,7 @@ class EmployeeController extends Controller
     )]
     public function show(Employee $employee)
     {
-        return Response::json(new EmployeeResource($employee));
+        return Response::json(new EmployeeResource($employee->load('skills')));
     }
 
     /**
@@ -246,5 +248,63 @@ class EmployeeController extends Controller
     {
         $employee->delete();
         return response()->noContent();
+    }
+
+    /**
+     * Attach a skill to an an employee.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    #[OAT\Post(
+        tags: ['employees'],
+        path: '/api/employees/{employee_uuid}/skills',
+        summary: 'Create a employee',
+        operationId: 'EmployeeController.attachSkills',
+        security: [['BearerToken' => []]],
+        parameters: [
+            new OAT\Parameter(
+                name: 'employee_uuid',
+                in: 'path',
+                required: true
+            )
+        ],
+        requestBody: new OAT\RequestBody(
+            required: true,
+            content: new OAT\JsonContent(ref: '#/components/schemas/AttachSkillRequest')
+        ),
+        responses: [
+            new OAT\Response(
+                response: HttpResponse::HTTP_OK,
+                description: 'Ok',
+                content: new OAT\JsonContent(ref: '#/components/schemas/EmployeeResource') 
+            ),
+            new OAT\Response(
+                response: HttpResponse::HTTP_UNAUTHORIZED,
+                description: 'Unauthorized',
+                content: new OAT\JsonContent(
+                    properties: [
+                        new OAT\Property(
+                            property: 'message',
+                            type: 'string',
+                            example: 'Invalid credentials.'
+                        ),
+                    ]
+                )
+            ),
+        ]
+    )]
+    public function attachSkills(AttachSkillRequest $request, Employee $employee)
+    {
+        $skills = $request->safe()->only(['skills']);
+
+        foreach ($skills as $skillUUID) {
+            if (!$employee->skills()->where('uuid', $skillUUID)->exists()) {
+                $skill = Skill::where('uuid', $skillUUID)->get();
+                $employee->skills()->attach($skill);
+            }
+        }
+        
+        return Response::json(new EmployeeResource($employee->load('skills')));
     }
 }

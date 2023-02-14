@@ -205,6 +205,42 @@ paths:
       security:
         -
           BearerToken: []
+  '/api/employees/{employee_uuid}/skills':
+    post:
+      tags:
+        - employees
+      summary: 'Create a employee'
+      description: 'Attach a skill to an an employee.'
+      operationId: EmployeeController.attachSkills
+      parameters:
+        -
+          name: employee_uuid
+          in: path
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttachSkillRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResource'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'Invalid credentials.' }
+                type: object
+      security:
+        -
+          BearerToken: []
   /api/skills:
     get:
       tags:
@@ -377,6 +413,18 @@ components:
                 type: string
                 example: 'Error message 2'
           type: object
+      type: object
+    AttachSkillRequest:
+      required:
+        - skills
+      properties:
+        skills:
+          description: 'Get the validation rules that apply to the request.'
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: 717f46a9-1d19-4527-af39-ae872c951f17
       type: object
     LoginRequest:
       required:

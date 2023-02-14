@@ -40,6 +40,7 @@ class SkillResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|Arrayable|JsonSerializable
      */
+    
     public function toArray($request): array|Arrayable|JsonSerializable
     {
         return [
