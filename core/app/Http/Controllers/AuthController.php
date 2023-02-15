@@ -12,6 +12,7 @@ use OpenApi\Attributes as OAT;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 
 class AuthController extends Controller
