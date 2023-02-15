@@ -28,7 +28,7 @@ class AttachSkillRequest extends FormRequest
     {
         return [
             'skills' => 'required|max:1000|array',
-            'skills.*' => 'uuid',
+            'skills.*' => 'uuid|exists:skills,uuid',
         ];
     }
 }
