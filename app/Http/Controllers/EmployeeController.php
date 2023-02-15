@@ -251,7 +251,7 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Attach a skill to an an employee.
+     * Attach skills to an employee.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -307,4 +307,6 @@ class EmployeeController extends Controller
         
         return Response::json(new EmployeeResource($employee->load('skills')));
     }
+
+
 }
