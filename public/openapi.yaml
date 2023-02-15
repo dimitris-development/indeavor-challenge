@@ -209,9 +209,44 @@ paths:
     post:
       tags:
         - employees
-      summary: 'Create a employee'
-      description: 'Attach a skill to an an employee.'
+      summary: 'Attach skills to an employee'
+      description: 'Attach skills to an employee.'
       operationId: EmployeeController.attachSkills
+      parameters:
+        -
+          name: employee_uuid
+          in: path
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttachSkillRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResource'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'Invalid credentials.' }
+                type: object
+      security:
+        -
+          BearerToken: []
+    delete:
+      tags:
+        - employees
+      summary: 'Remove skills from an employee'
+      description: 'Remove skills from an employee.'
+      operationId: EmployeeController.removeSkills
       parameters:
         -
           name: employee_uuid
@@ -438,6 +473,18 @@ components:
         password:
           type: string
           example: '123456'
+      type: object
+    DetachSkillRequest:
+      required:
+        - skills
+      properties:
+        skills:
+          description: 'Get the validation rules that apply to the request.'
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: 717f46a9-1d19-4527-af39-ae872c951f17
       type: object
     StoreEmployeeRequest:
       required:

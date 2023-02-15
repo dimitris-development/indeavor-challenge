@@ -10,5 +10,5 @@ Route::controller(EmployeeController::class)->group(function () {
     Route::post('/employees', 'store');
     Route::delete('/employees/{employee}', 'destroy');
     Route::post('/employees/{employee}/skills', 'attachSkills');
-    Route::delete('/employees/{employee}/skills/{skill}', 'removeSkill');
+    Route::delete('/employees/{employee}/skills', 'removeSkills');
 });

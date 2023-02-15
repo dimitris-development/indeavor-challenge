@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
+use App\Http\Requests\DetachSkillRequest;
 use App\Http\Requests\AttachSkillRequest;
 use App\Models\Employee;
 use App\Models\Skill;
@@ -305,6 +306,63 @@ class EmployeeController extends Controller
             }
         }
         
+        return Response::json(new EmployeeResource($employee->load('skills')));
+    }
+
+    /**
+     * Remove skills from an employee.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    #[OAT\Delete(
+        tags: ['employees'],
+        path: '/api/employees/{employee_uuid}/skills',
+        summary: 'Remove skills from an employee',
+        operationId: 'EmployeeController.removeSkills',
+        security: [['BearerToken' => []]],
+        parameters: [
+            new OAT\Parameter(
+                name: 'employee_uuid',
+                in: 'path',
+                required: true
+            )
+        ],
+        requestBody: new OAT\RequestBody(
+            required: true,
+            content: new OAT\JsonContent(ref: '#/components/schemas/AttachSkillRequest')
+        ),
+        responses: [
+            new OAT\Response(
+                response: HttpResponse::HTTP_OK,
+                description: 'Ok',
+                content: new OAT\JsonContent(ref: '#/components/schemas/EmployeeResource') 
+            ),
+            new OAT\Response(
+                response: HttpResponse::HTTP_UNAUTHORIZED,
+                description: 'Unauthorized',
+                content: new OAT\JsonContent(
+                    properties: [
+                        new OAT\Property(
+                            property: 'message',
+                            type: 'string',
+                            example: 'Invalid credentials.'
+                        ),
+                    ]
+                )
+            ),
+        ]
+    )]
+    public function removeSkills(DetachSkillRequest $request, Employee $employee)
+    {
+        $skills = $request->safe()->only(['skills']);
+        foreach ($skills as $skillUUID) {
+            if ($employee->skills()->where('uuid', $skillUUID)->exists()) {
+                $skill = Skill::where('uuid', $skillUUID)->get();
+                $employee->skills()->detach($skill);
+            }
+        }
+
         return Response::json(new EmployeeResource($employee->load('skills')));
     }
 }
