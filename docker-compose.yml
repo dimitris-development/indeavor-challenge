@@ -44,6 +44,18 @@ services:
             test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
             retries: 3
             timeout: 5s
+    crust:
+        build: ./crust
+        ports:
+            - "${WEB_PORT:-3000}:3000"
+        environment:
+            API_URL: '127.0.0.1:${APP_PORT}'
+        volumes:
+            - ./crust:/app
+        networks:
+            - sail
+        depends_on:
+            - laravel.test
 networks:
     sail:
         driver: bridge

@@ -8,4 +8,5 @@
 /**/.fleet
 /**/.vscode
 /**/.phpunit.result.cache
+/**/node_modules
 .env
