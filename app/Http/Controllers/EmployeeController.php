@@ -259,7 +259,7 @@ class EmployeeController extends Controller
     #[OAT\Post(
         tags: ['employees'],
         path: '/api/employees/{employee_uuid}/skills',
-        summary: 'Create a employee',
+        summary: 'Attach skills to an employee',
         operationId: 'EmployeeController.attachSkills',
         security: [['BearerToken' => []]],
         parameters: [
@@ -307,6 +307,4 @@ class EmployeeController extends Controller
         
         return Response::json(new EmployeeResource($employee->load('skills')));
     }
-
-
 }
