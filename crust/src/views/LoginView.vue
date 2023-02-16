@@ -20,18 +20,18 @@
             required
           ></v-text-field>
         </v-form>
-        <v-card-actions>
-          <v-btn
-            x-large
-            block
-            :disabled="!valid"
-            color="success"
-            @click="() => login(email, password)"
-          >
-            Login
-          </v-btn>
-        </v-card-actions>
       </v-card-text>
+      <v-card-actions>
+        <v-btn
+          x-large
+          block
+          :disabled="!valid"
+          color="success"
+          @click="() => login(email, password)"
+        >
+          Login
+        </v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
