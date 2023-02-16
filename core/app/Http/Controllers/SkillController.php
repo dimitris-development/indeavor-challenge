@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreSkillRequest;
 use App\Http\Requests\UpdateSkillRequest;
 use App\Models\Skill;
@@ -18,6 +19,7 @@ class SkillController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     #[OAT\Get(
@@ -52,7 +54,7 @@ class SkillController extends Controller
     )]
     public function index()
     {
-        return Response::json(SkillResource::collection(Skill::all()));
+        return new ResourceCollection($skill->paginate(2));
     }
 
     /**
