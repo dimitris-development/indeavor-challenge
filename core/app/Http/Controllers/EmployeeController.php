@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Http\Requests\DetachSkillRequest;
@@ -15,12 +16,15 @@ use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Response;
 use App\Http\Resources\EmployeeResource;
 use Illuminate\Support\Str;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+
 
 class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * 
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     #[OAT\Get(
@@ -29,6 +33,16 @@ class EmployeeController extends Controller
         summary: 'Show employees',
         operationId: 'EmployeeController.index',
         security: [['BearerToken' => []]],
+        parameters: [
+            new OAT\Parameter(
+                name: 'page',
+                in: 'query',
+            ),
+            new OAT\Parameter(
+                name: 'sortType',
+                in: 'query',
+            )
+        ],
         responses: [
             new OAT\Response(
                 response: HttpResponse::HTTP_OK,
@@ -53,9 +67,14 @@ class EmployeeController extends Controller
             ),
         ]
     )]
-    public function index()
+    public function index(Request $request)
     {
-        return Response::json(EmployeeResource::collection(Employee::all()));
+        $sortType = $request->query('sortType');
+        $employee = ($sortType === 'desc') 
+            ? Employee::orderBy('last_name', 'desc')
+            : Employee::orderBy('last_name', 'asc');
+
+        return new ResourceCollection($employee->paginate(2));
     }
 
     /**

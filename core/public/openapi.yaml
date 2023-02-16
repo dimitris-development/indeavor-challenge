@@ -65,6 +65,13 @@ paths:
       summary: 'Show employees'
       description: 'Display a listing of the resource.'
       operationId: EmployeeController.index
+      parameters:
+        -
+          name: page
+          in: query
+        -
+          name: sortType
+          in: query
       responses:
         '200':
           description: Ok
