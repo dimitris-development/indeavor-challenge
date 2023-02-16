@@ -7,22 +7,28 @@ export const useEmployeeStore = defineStore('employee', {
   state: () => {
     return {
       items: [],
-      page: 1,
-      total: 4,
-      count: 4,
+      page: 0,
+      total: 0,
+      rowsPerPage: 0,
+      sortType: 'asc',
       loading: true
     }
   },
   actions: {
-    async get() {
+    async get(serverOptions) {
       this.loading = true
       try {
-        const items = await fetchWrapper.get(employeesURL)
-        this.items = items
+        const response = await fetchWrapper.get(`${employeesURL}?sortType=${serverOptions.sortType}&page=${serverOptions.page}`)
+        this.items = response.data
+        this.page = response.meta.current_page
+        this.total = response.meta.total
+        this.rowsPerPage = response.meta.per_page
       } catch (error) {
+        console.log(error)
         //const alertStore = useAlertStore()
         //alertStore.error(error)  
       }
+
       this.loading = false
     }
   }

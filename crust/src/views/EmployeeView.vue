@@ -18,17 +18,24 @@ export default {
   data: () => ({
     headers: [
       { text: "FIRST NAME", value: "first_name" },
-      { text: "LAST NAME", value: "last_name" },
+      { text: "LAST NAME", value: "last_name", sortable: true },
     ],
     serverOptions: {
       page: 1,
-      rowsPerPage: 5,
-      sortBy: "first_name",
-      sortType: "desc",
+      rowsPerPage: 1,
+      sortBy: "last_name",
+      sortType: "asc",
     },
   }),
   beforeMount() {
-    this.employee.get();
+    this.employee.get(this.serverOptions);
+  },
+  watch: {
+    serverOptions: {
+      handler() {
+        this.employee.get(this.serverOptions);
+      },
+    },
   },
 };
 </script>
