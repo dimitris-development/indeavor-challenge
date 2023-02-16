@@ -1,6 +1,5 @@
 <script setup>
 import { RouterView } from "vue-router";
-import { mapState } from "pinia";
 </script>
 
 <template>

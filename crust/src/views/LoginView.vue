@@ -36,7 +36,7 @@
   </v-dialog>
 </template>
 <script>
-import { mapActions } from "pinia";
+import { mapActions, mapStores } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 
 export default {
@@ -50,7 +50,13 @@ export default {
     ],
     passwordShow: false,
     valid: false,
+    ...mapStores(useAuthStore, ["auth"]),
   }),
+  computed: {
+    isAuthenticated() {
+      return !!auth.user.token;
+    },
+  },
   methods: {
     ...mapActions(useAuthStore, ["login"]),
   },
