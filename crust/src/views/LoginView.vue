@@ -27,7 +27,7 @@
           block
           :disabled="!valid"
           color="success"
-          @click="() => login(email, password)"
+          @click="() => auth.login(email, password)"
         >
           Login
         </v-btn>
@@ -36,10 +36,13 @@
   </v-dialog>
 </template>
 <script>
-import { mapActions, mapStores } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 
 export default {
+  setup: () => {
+    const auth = useAuthStore();
+    return { auth };
+  },
   data: () => ({
     dialog: true,
     email: "",
@@ -50,10 +53,6 @@ export default {
     ],
     passwordShow: false,
     valid: false,
-    ...mapStores(useAuthStore, ["auth"]),
   }),
-  methods: {
-    ...mapActions(useAuthStore, ["login"]),
-  },
 };
 </script>
