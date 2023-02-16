@@ -1,12 +1,11 @@
 <script setup>
-import { RouterView } from 'vue-router'
-import { mapState } from 'pinia'
-import { useAuthStore } from './stores/auth'
+import { RouterView } from "vue-router";
+import { mapState } from "pinia";
+import { useAuthStore } from "@/stores/auth";
 </script>
 
 <template>
   <v-app>
-    <SideBar v-if="loggedIn"/>
     <v-main>
       <RouterView />
     </v-main>
@@ -14,18 +13,12 @@ import { useAuthStore } from './stores/auth'
 </template>
 
 <script>
-import SideBar from './components/SideBar.vue'
-
 export default {
-  name: 'App',
-  components: {
-    SideBar
-  },
+  name: "App",
   computed: {
     ...mapState(useAuthStore, {
-      loggedIn: (user) => !!user.token
-    })
-  }
-}
-
+      loggedIn: (user) => !!user.token,
+    }),
+  },
+};
 </script>

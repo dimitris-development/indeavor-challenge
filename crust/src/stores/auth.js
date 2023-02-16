@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia'
 
-import { fetchWrapper } from '@/helpers'
-import { router } from '@/router'
-import { useAlertStore } from '@/stores'
+import { fetchWrapper } from '@/helpers/fetchWrapper.js'
+import router from '@/router'
 
 export const useAuthStore = defineStore('auth', {
   state: () => {
@@ -18,8 +17,8 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem('user', JSON.stringify(user))
         router.push('/')
       } catch (error) {
-        const alertStore = useAlertStore()
-        alertStore.error(error)       
+        //const alertStore = useAlertStore()
+        //alertStore.error(error)       
       }
     },
     logout() {
