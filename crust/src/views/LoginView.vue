@@ -52,11 +52,6 @@ export default {
     valid: false,
     ...mapStores(useAuthStore, ["auth"]),
   }),
-  computed: {
-    isAuthenticated() {
-      return !!auth.user.token;
-    },
-  },
   methods: {
     ...mapActions(useAuthStore, ["login"]),
   },
