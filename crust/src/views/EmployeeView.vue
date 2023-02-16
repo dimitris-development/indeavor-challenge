@@ -5,6 +5,8 @@
     :loading="employee.loading"
     :headers="headers"
     :items="employee.items"
+    hide-rows-per-page
+    must-sort
   />
 </template>
 <script>
@@ -22,17 +24,19 @@ export default {
     ],
     serverOptions: {
       page: 1,
-      rowsPerPage: 1,
+      // This library doesn't allow you to use rowsPerPage as a prop when you have serverOptions
+      // For now this is hardcoded
+      rowsPerPage: 2,
       sortBy: "last_name",
       sortType: "asc",
     },
   }),
-  beforeMount() {
-    this.employee.get(this.serverOptions);
+  async beforeMount() {
+    await this.employee.get(this.serverOptions);
   },
   watch: {
     serverOptions: {
-      handler() {
+      handler(oldOptions, newOptions) {
         this.employee.get(this.serverOptions);
       },
     },
