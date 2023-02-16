@@ -17,7 +17,6 @@
             v-model="password"
             type="password"
             label="Password"
-            hint="At least 8 characters"
             required
           ></v-text-field>
         </v-form>
@@ -27,7 +26,7 @@
             block
             :disabled="!valid"
             color="success"
-            @click="() => {}"
+            @click="() => login(email, password)"
           >
             Login
           </v-btn>
@@ -37,6 +36,9 @@
   </v-dialog>
 </template>
 <script>
+import { mapActions } from "pinia";
+import { useAuthStore } from "@/stores/auth";
+
 export default {
   data: () => ({
     dialog: true,
@@ -49,5 +51,8 @@ export default {
     passwordShow: false,
     valid: false,
   }),
+  methods: {
+    ...mapActions(useAuthStore, ["login"]),
+  },
 };
 </script>
