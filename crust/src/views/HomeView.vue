@@ -7,6 +7,7 @@
           title="Employees"
           subtitle="Employee Management"
           text="Click here to manage employees"
+          @click="() => $router.push({ name: 'employees' })"
         ></v-card>
       </v-col>
     </v-row>

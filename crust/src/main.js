@@ -11,6 +11,9 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 
+import Vue3EasyDataTable from 'vue3-easy-data-table';
+import 'vue3-easy-data-table/dist/style.css';
+
 const vuetify = createVuetify({
   theme: {
     defaultTheme: 'dark'
@@ -22,8 +25,8 @@ const vuetify = createVuetify({
   directives,
 })
 
-
 const app = createApp(App)
+app.component('DataTable', Vue3EasyDataTable)
 app.use(vuetify)
 app.use(createPinia())
 app.use(router)
