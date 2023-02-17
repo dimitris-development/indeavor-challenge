@@ -6,6 +6,7 @@ import EmployeeView from '@/views/EmployeeView.vue'
 import EmployeeEditView from '@/views/EmployeeEditView.vue'
 import EmployeeNewView from '@/views/EmployeeNewView.vue'
 import SkillView from '@/views/SkillView.vue'
+import SkillEditView from '@/views/SkillEditView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,9 +38,15 @@ const router = createRouter({
     },
     {
       path: '/skills',
-      name: 'skill',
+      name: 'skills',
       component: SkillView
-    }
+    },
+    {
+      path: '/skills/:skillUUID',
+      name: 'skill',
+      component: SkillEditView
+    },
+    
   ]
 })
 

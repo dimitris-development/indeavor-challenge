@@ -31,7 +31,7 @@ class UpdateSkillRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:skill|max:100',
+            'name' => 'required|max:100',
             'description' => 'required|max:255'
         ];
     }

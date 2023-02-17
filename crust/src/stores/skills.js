@@ -7,6 +7,7 @@ export const useSkillStore = defineStore('skills', {
   state: () => {
     return {
       items: [],
+      item: {},
       page: 0,
       total: 0,
       rowsPerPage: 0,
@@ -40,7 +41,28 @@ export const useSkillStore = defineStore('skills', {
         //const alertStore = useAlertStore()
         //alertStore.error(error)  
       }
-    }
+    },
+    async getOne(skillUUID) {
+      try {
+        const skill = await fetchWrapper.get(`${skillsURL}/${skillUUID}`)
+        this.item = skill
+      } catch (error) {
+        console.log(error)
+        router.push({ name: 'skills'})
+        //const alertStore = useAlertStore()
+        //alertStore.error(error)  
+      }
+    },
+    async updateDetails(skillUUID, details) {
+      try {
+        const skill = await fetchWrapper.put(`${skillsURL}/${skillUUID}`, details)
+        this.item = skill
+      } catch (error) {
+        console.log(error)
+        //const alertStore = useAlertStore()
+        //alertStore.error(error) 
+      }
+    },
   }
 })
 

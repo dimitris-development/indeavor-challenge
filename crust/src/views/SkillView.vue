@@ -36,7 +36,16 @@
           icon="mdi-delete"
           @click="() => showDeleteDialog(item.uuid)"
         ></v-btn>
-        <v-btn size="x-small" icon="mdi-pencil"></v-btn>
+        <v-btn
+          size="x-small"
+          icon="mdi-pencil"
+          @click="
+            () =>
+              $router.push({
+                path: `/skills/${item.uuid}`,
+              })
+          "
+        ></v-btn>
       </div>
     </template>
   </DataTable>
