@@ -74,6 +74,16 @@ export const useEmployeeStore = defineStore('employees', {
         //const alertStore = useAlertStore()
         //alertStore.error(error)  
       }
+    },
+    async updateDetails(employeeUUID, details) {
+      try {
+        const employee = await fetchWrapper.put(`${employeesURL}/${employeeUUID}`, details)
+        this.item = employee
+      } catch (error) {
+        console.log(error)
+        //const alertStore = useAlertStore()
+        //alertStore.error(error) 
+      }
     }
   }
 })

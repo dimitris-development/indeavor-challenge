@@ -1,16 +1,19 @@
 <template>
   <v-form ref="form" fast-fail v-model="valid">
     <v-text-field
+      :disabled="detailsLoading"
       v-model="employee.item.first_name"
       label="First name"
       required
     ></v-text-field>
 
     <v-text-field
+      :disabled="detailsLoading"
       v-model="employee.item.last_name"
       label="Last name"
       required
-    ></v-text-field>
+    >
+    </v-text-field>
 
     <span class="text-h6 mb-2"> Skills </span>
 
@@ -30,6 +33,18 @@
         {{ skill.name }}
       </v-chip>
     </v-chip-group>
+
+    <div class="d-flex justify-between mt-5">
+      <v-btn @click="() => $router.push({ name: 'employees' })"> Back </v-btn>
+      <v-btn
+        :disabled="!valid"
+        color="success"
+        class="ml-2"
+        @click="() => updateDetails()"
+      >
+        Update
+      </v-btn>
+    </div>
   </v-form>
 </template>
 <script>
@@ -41,6 +56,7 @@ export default {
     valid: true,
     attachedSkills: [],
     skillLoading: false,
+    detailsLoading: false,
     initialLoad: true,
   }),
   setup: () => {
@@ -50,11 +66,13 @@ export default {
   },
   async beforeMount() {
     this.skillLoading = true;
+    this.detailsLoading = true;
     const employeeUUID = this.$route.params["employeeUUID"];
     await this.skills.get({ dontPaginate: true });
     await this.employee.getOne(employeeUUID);
 
     this.attachedSkills = this.employee.item.skills.map((skill) => skill.uuid);
+    this.detailsLoading = false;
     this.skillLoading = false;
   },
   watch: {
@@ -80,6 +98,15 @@ export default {
     },
   },
   methods: {
+    async updateDetails() {
+      this.detailsLoading = true;
+      await this.employee.updateDetails(
+        this.employee.item.uuid,
+        this.employee.item
+      );
+
+      this.detailsLoading = false;
+    },
     symmetricDifference(array1, array2) {
       const diff = new Set(array1);
 
