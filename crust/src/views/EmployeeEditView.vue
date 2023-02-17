@@ -85,12 +85,12 @@ export default {
       const updatedSkill = this.symmetricDifference(
         new Set(oldSkills),
         new Set(newSkills)
-      )[0];
+      );
 
       const updateType =
         oldSkills.length > newSkills.length ? "detach" : "attach";
 
-      await this.employee.updateSkill(
+      await this.employee.updateSkills(
         this.employee.item.uuid,
         updatedSkill,
         updateType

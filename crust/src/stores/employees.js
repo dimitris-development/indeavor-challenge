@@ -58,7 +58,7 @@ export const useEmployeeStore = defineStore('employees', {
         //alertStore.error(error)  
       }
     },
-    async updateSkill(employeeUUID, skillUUID, updateType) {
+    async updateSkills(employeeUUID, skills, updateType) {
       const method = {
         'attach' : 'post',
         'detach' : 'delete' 
@@ -66,7 +66,7 @@ export const useEmployeeStore = defineStore('employees', {
 
       try {
         const employee = await fetchWrapper[method[updateType]](`${employeesURL}/${employeeUUID}/skills`, {
-          skills: [skillUUID]
+          skills
         })
         this.item = employee
       } catch (error) {
@@ -83,6 +83,21 @@ export const useEmployeeStore = defineStore('employees', {
         console.log(error)
         //const alertStore = useAlertStore()
         //alertStore.error(error) 
+      }
+    },
+    async create(details, skills) {
+      try {
+        const employee = await fetchWrapper.post(`${employeesURL}`, details)
+        
+        if (skills.length) {
+          const employeeUUID = employee.uuid
+          await this.updateSkills(employeeUUID, skills, 'attach')
+          router.push({path: `/employees/${employeeUUID}`})
+        }
+      } catch(error) {
+        console.log(error)
+        //const alertStore = useAlertStore()
+        //alertStore.error(error)
       }
     }
   }

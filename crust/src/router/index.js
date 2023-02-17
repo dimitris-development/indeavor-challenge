@@ -4,6 +4,7 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import EmployeeView from '@/views/EmployeeView.vue'
 import EmployeeEditView from '@/views/EmployeeEditView.vue'
+import EmployeeNewView from '@/views/EmployeeNewView.vue'
 import SkillView from '@/views/SkillView.vue'
 
 const router = createRouter({
@@ -28,6 +29,11 @@ const router = createRouter({
       path: '/employees/:employeeUUID',
       name: 'employee',
       component: EmployeeEditView
+    },
+    {
+      path: '/employees/new',
+      name: 'new_employee',
+      component: EmployeeNewView
     },
     {
       path: '/skills',
