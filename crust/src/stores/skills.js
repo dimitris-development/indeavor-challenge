@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { fetchWrapper } from '@/helpers/fetchWrapper.js'
 
+import router from '@/router'
 const skillsURL = `${import.meta.env.VITE_API_URL}/skills`
 
 export const useSkillStore = defineStore('skills', {
@@ -63,6 +64,17 @@ export const useSkillStore = defineStore('skills', {
         //alertStore.error(error) 
       }
     },
+    async create(details) {
+      try {
+        const skill = await fetchWrapper.post(`${skillsURL}`, details)
+        const skillUUID = skill.uuid
+        router.push({path: `/skills/${skillUUID}`})
+      } catch(error) {
+        console.log(error)
+        //const alertStore = useAlertStore()
+        //alertStore.error(error)
+      }
+    }
   }
 })
 

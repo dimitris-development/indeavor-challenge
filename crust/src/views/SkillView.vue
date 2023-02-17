@@ -15,7 +15,16 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+  <v-btn
+    color="success"
+    class="mt-4"
+    :disabled="skill.loading"
+    @click="() => $router.push({ name: 'new_skill' })"
+  >
+    New
+  </v-btn>
   <DataTable
+    class="mt-4"
     theme-color="#1d90ff"
     table-class-name="customize-table"
     buttons-pagination
