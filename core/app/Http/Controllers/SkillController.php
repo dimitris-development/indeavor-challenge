@@ -53,9 +53,12 @@ class SkillController extends Controller
             ),
         ]
     )]
-    public function index()
+    public function index(Request $request)
     {
-
+        // TODO : Refactor
+        if ($request->exists('dontPaginate')) {
+            return Response::json(SkillResource::collection(Skill::all())); 
+        }
         return new ResourceCollection(Skill::paginate(2));
     }
 

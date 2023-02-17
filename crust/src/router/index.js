@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/auth"
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import EmployeeView from '@/views/EmployeeView.vue'
+import EmployeeEditView from '@/views/EmployeeEditView.vue'
 import SkillView from '@/views/SkillView.vue'
 
 const router = createRouter({
@@ -24,8 +25,13 @@ const router = createRouter({
       component: EmployeeView
     },
     {
+      path: '/employees/:employeeUUID',
+      name: 'employee',
+      component: EmployeeEditView
+    },
+    {
       path: '/skills',
-      name: 'skills',
+      name: 'skill',
       component: SkillView
     }
   ]

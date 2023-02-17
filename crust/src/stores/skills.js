@@ -17,13 +17,15 @@ export const useSkillStore = defineStore('skills', {
     async get(serverOptions) {
       this.loading = true
       try {
-        const response = await fetchWrapper.get(`${skillsURL}?page=${serverOptions.page}`)
-        this.items = response.data
-        this.page = response.meta.current_page
-        this.total = response.meta.total
-        this.rowsPerPage = response.meta.per_page
+        // TODO : Refactor
+        const queryString = serverOptions.dontPaginate ? 'dontPaginate' : `page=${serverOptions.page}`
+        const response = await fetchWrapper.get(`${skillsURL}?${queryString}`)
+        
+        this.items = response?.data ?? response
+        this.page = response?.meta?.current_page
+        this.total = response?.meta?.total
+        this.rowsPerPage = response?.meta?.per_page
       } catch (error) {
-        console.log(error)
         //const alertStore = useAlertStore()
         //alertStore.error(error)  
       }

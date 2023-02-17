@@ -1,12 +1,18 @@
 import { defineStore } from 'pinia'
 import { fetchWrapper } from '@/helpers/fetchWrapper.js'
 
+import router from '@/router'
 const employeesURL = `${import.meta.env.VITE_API_URL}/employees`
 
 export const useEmployeeStore = defineStore('employees', {
   state: () => {
     return {
       items: [],
+      item: {
+        first_name: '',
+        last_name: '',
+        skills: []
+      },
       page: 0,
       total: 0,
       rowsPerPage: 0,
@@ -31,6 +37,17 @@ export const useEmployeeStore = defineStore('employees', {
 
       this.loading = false
     },
+    async getOne(employeeUUID) {
+      try {
+        const employee = await fetchWrapper.get(`${employeesURL}/${employeeUUID}`)
+        this.item = employee
+      } catch (error) {
+        console.log(error)
+        router.push({ name: 'employees'})
+        //const alertStore = useAlertStore()
+        //alertStore.error(error)  
+      }
+    },
     async delete(employeeUUID) {
       try {
         await fetchWrapper.delete(`${employeesURL}/${employeeUUID}`)
@@ -39,7 +56,7 @@ export const useEmployeeStore = defineStore('employees', {
         //const alertStore = useAlertStore()
         //alertStore.error(error)  
       }
-    }
+    },
   }
 })
 
