@@ -1,4 +1,5 @@
 import { useAuthStore } from '@/stores/auth.js';
+import router from '@/router'
 
 export const fetchWrapper = {
   get: request('GET'),
@@ -43,9 +44,8 @@ async function handleResponse(response) {
   // check for error response
   if (!response.ok) {
     const { user, logout } = useAuthStore();
-
-    if ([401, 403].includes(response.status) && user) {
-      logout();
+    if ([401, 403].includes(response.status) && user?.token) {
+      logout()
     }
 
     const error = (data && data.message) || response.status;

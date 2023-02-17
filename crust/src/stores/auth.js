@@ -3,7 +3,7 @@ import { fetchWrapper } from '@/helpers/fetchWrapper.js'
 
 import router from '@/router'
 
-const loginURL = `${import.meta.env.VITE_API_URL}/login`
+const baseURL = `${import.meta.env.VITE_API_URL}`
 
 export const useAuthStore = defineStore('auth', {
   state: () => {
@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login(email, password) {
       try {
-        const user = await fetchWrapper.post(loginURL, { email, password });    
+        const user = await fetchWrapper.post(`${baseURL}/login`, { email, password });    
         this.user = user
         localStorage.setItem('user', JSON.stringify(user))
         router.push('/')
@@ -24,8 +24,16 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     logout() {
-      this.user = null
-      localStorage.removeItem('user')
+      try {
+        fetchWrapper.post(`${baseURL}/logout`);
+        localStorage.removeItem('user')
+        this.$reset()
+        router.push('/login')
+      } catch (error) {
+        console.log(error)
+        //const alertStore = useAlertStore()
+        //alertStore.error(error)  
+      }
     }
   }
 })

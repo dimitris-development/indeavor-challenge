@@ -21,7 +21,7 @@ class AuthController extends Controller
      * Login a user.
      *
      * @param  LoginRequest  $request
-     * @return JsonResponse
+     * @return Illuminate\Http\Response
      *
      * @throws HttpException
      * @throws NotFoundHttpException
@@ -62,7 +62,7 @@ class AuthController extends Controller
             ),
         ]
     )]
-    public function login(LoginRequest $request): JsonResponse
+    public function login(LoginRequest $request)
     {
         $user = User::where('email', $request->email)->first();
 
@@ -77,7 +77,7 @@ class AuthController extends Controller
      * Logout a user.
      *
      * @param  Request  $request
-     * @return JsonResponse
+     * @return Illuminate\Http\Response
      */
     #[OAT\Post(
         tags: ['auth'],
@@ -105,7 +105,7 @@ class AuthController extends Controller
             ),
         ]
     )]
-    public function logout(Request $request): JsonResponse
+    public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
         return response()->noContent();

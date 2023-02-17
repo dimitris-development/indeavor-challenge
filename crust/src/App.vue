@@ -12,17 +12,20 @@
 <script>
 import { RouterView } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
-import { mapState } from "pinia";
 import AppBar from "@/components/AppBar.vue";
 
 export default {
+  setup: () => {
+    const auth = useAuthStore();
+    return { auth };
+  },
   components: {
     AppBar,
   },
   computed: {
-    ...mapState(useAuthStore, {
-      isAuthenticated: (state) => !!state.user?.token,
-    }),
+    isAuthenticated() {
+      return !!this.auth.user?.token;
+    },
   },
 };
 </script>
