@@ -13,6 +13,7 @@ use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Response;
 use App\Http\Resources\SkillResource;
 use Illuminate\Support\Str;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class SkillController extends Controller
 {
@@ -54,7 +55,8 @@ class SkillController extends Controller
     )]
     public function index()
     {
-        return new ResourceCollection($skill->paginate(2));
+
+        return new ResourceCollection(Skill::paginate(2));
     }
 
     /**

@@ -1,24 +1,23 @@
 import { defineStore } from 'pinia'
 import { fetchWrapper } from '@/helpers/fetchWrapper.js'
 
-const employeesURL = `${import.meta.env.VITE_API_URL}/employees`
+const skillsURL = `${import.meta.env.VITE_API_URL}/skills`
 
-export const useEmployeeStore = defineStore('employees', {
+export const useSkillStore = defineStore('skills', {
   state: () => {
     return {
       items: [],
       page: 0,
       total: 0,
       rowsPerPage: 0,
-      sortType: 'asc',
-      loading: true,
+      loading: true
     }
   },
   actions: {
     async get(serverOptions) {
       this.loading = true
       try {
-        const response = await fetchWrapper.get(`${employeesURL}?sortType=${serverOptions.sortType}&page=${serverOptions.page}`)
+        const response = await fetchWrapper.get(`${skillsURL}?page=${serverOptions.page}`)
         this.items = response.data
         this.page = response.meta.current_page
         this.total = response.meta.total
@@ -31,9 +30,9 @@ export const useEmployeeStore = defineStore('employees', {
 
       this.loading = false
     },
-    async delete(employeeUUID) {
+    async delete(skillUUID) {
       try {
-        await fetchWrapper.delete(`${employeesURL}/${employeeUUID}`)
+        await fetchWrapper.delete(`${skillsURL}/${skillUUID}`)
       } catch (error) {
         console.log(error)
         //const alertStore = useAlertStore()

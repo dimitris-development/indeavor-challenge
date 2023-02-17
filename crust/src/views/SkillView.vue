@@ -7,13 +7,11 @@
   >
     <v-card class="px-4">
       <v-card-title> Are you sure? </v-card-title>
-      <v-card-text>
-        Are you sure you want to delete this employee?
-      </v-card-text>
+      <v-card-text> Are you sure you want to delete this skill? </v-card-text>
       <v-card-actions>
         <v-btn color="success" @click="deleteDialog = false"> Cancel </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="red" @click="() => deleteEmployee()"> Delete </v-btn>
+        <v-btn color="red" @click="() => deleteSkill()"> Delete </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -22,10 +20,10 @@
     table-class-name="customize-table"
     buttons-pagination
     v-model:server-options="serverOptions"
-    :server-items-length="employee.total"
-    :loading="employee.loading"
+    :server-items-length="skill.total"
+    :loading="skill.loading"
     :headers="headers"
-    :items="employee.items"
+    :items="skill.items"
     hide-rows-per-page
     must-sort
   >
@@ -45,17 +43,17 @@
 </template>
 <script>
 import "@/assets/datatable.css";
-import { useEmployeeStore } from "@/stores/employees";
+import { useSkillStore } from "@/stores/skills";
 
 export default {
   setup: () => {
-    const employee = useEmployeeStore();
-    return { employee };
+    const skill = useSkillStore();
+    return { skill };
   },
   data: () => ({
     headers: [
-      { text: "Firt Name", value: "first_name" },
-      { text: "Last Name", value: "last_name", sortable: true },
+      { text: "Name", value: "name" },
+      { text: "Description", value: "description" },
       { text: "Actions", value: "actions" },
     ],
     serverOptions: {
@@ -63,32 +61,30 @@ export default {
       // This library doesn't allow you to use rowsPerPage as a prop when you have serverOptions
       // For now this is hardcoded
       rowsPerPage: 2,
-      sortBy: "last_name",
-      sortType: "asc",
     },
-    selectedEmployeeUUID: "",
+    selectedSkillUUID: "",
     deleteDialog: false,
   }),
   async beforeMount() {
-    await this.employee.get(this.serverOptions);
+    await this.skill.get(this.serverOptions);
   },
   watch: {
     serverOptions: {
       handler() {
-        this.employee.get(this.serverOptions);
+        this.skill.get(this.serverOptions);
       },
     },
   },
   methods: {
-    showDeleteDialog(employeeUUID) {
-      this.selectedEmployeeUUID = employeeUUID;
+    showDeleteDialog(skillUUID) {
+      this.selectedSkillUUID = skillUUID;
       this.deleteDialog = true;
     },
-    async deleteEmployee() {
-      await this.employee.delete(this.selectedEmployeeUUID);
-      await this.employee.get(this.serverOptions);
+    async deleteSkill() {
+      await this.skill.delete(this.selectedSkillUUID);
+      await this.skill.get(this.serverOptions);
       this.deleteDialog = false;
-      this.selectedEmployeeUUID = "";
+      this.selectedSkillUUID = "";
     },
   },
 };
