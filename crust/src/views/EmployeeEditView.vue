@@ -41,8 +41,6 @@ export default {
   },
   computed: {
     attachedSkills() {
-      console.log(this.employee.item.skills.map((skill) => skill.uuid));
-
       return this.employee.item.skills.map((skill) => skill.uuid);
     },
   },
