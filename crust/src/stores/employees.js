@@ -9,6 +9,7 @@ export const useEmployeeStore = defineStore('employees', {
     return {
       items: [],
       item: {
+        uuid: '',
         first_name: '',
         last_name: '',
         skills: []
@@ -57,6 +58,23 @@ export const useEmployeeStore = defineStore('employees', {
         //alertStore.error(error)  
       }
     },
+    async updateSkill(employeeUUID, skillUUID, updateType) {
+      const method = {
+        'attach' : 'post',
+        'detach' : 'delete' 
+      }
+
+      try {
+        const employee = await fetchWrapper[method[updateType]](`${employeesURL}/${employeeUUID}/skills`, {
+          skills: [skillUUID]
+        })
+        this.item = employee
+      } catch (error) {
+        console.log(error)
+        //const alertStore = useAlertStore()
+        //alertStore.error(error)  
+      }
+    }
   }
 })
 
