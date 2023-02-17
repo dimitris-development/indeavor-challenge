@@ -316,15 +316,10 @@ class EmployeeController extends Controller
     )]
     public function attachSkills(AttachSkillRequest $request, Employee $employee)
     {
-        $skills = $request->safe()->only(['skills']);
-
-        foreach ($skills as $skillUUID) {
-            if (!$employee->skills()->where('uuid', $skillUUID)->exists()) {
-                $skill = Skill::where('uuid', $skillUUID)->get();
-                $employee->skills()->attach($skill);
-            }
-        }
-        
+        $skillsRequest = $request->safe()->only(['skills']);
+        $skills = Skill::whereIn('uuid', $skillsRequest['skills'])->get();
+        $employee->skills()->attach($skills);
+    
         return Response::json(new EmployeeResource($employee->load('skills')));
     }
 
@@ -375,12 +370,8 @@ class EmployeeController extends Controller
     public function removeSkills(DetachSkillRequest $request, Employee $employee)
     {
         $skills = $request->safe()->only(['skills']);
-        foreach ($skills as $skillUUID) {
-            if ($employee->skills()->where('uuid', $skillUUID)->exists()) {
-                $skill = Skill::where('uuid', $skillUUID)->get();
-                $employee->skills()->detach($skill);
-            }
-        }
+        $skills = Skill::whereIn('uuid', $skillsRequest['skills'])->get();
+        $employee->skills()->detach($skills);
 
         return Response::json(new EmployeeResource($employee->load('skills')));
     }
