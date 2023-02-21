@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Response;
 use App\Http\Resources\EmployeeResource;
 use Illuminate\Support\Str;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class EmployeeController extends Controller
@@ -317,9 +318,14 @@ class EmployeeController extends Controller
     public function attachSkills(AttachSkillRequest $request, Employee $employee)
     {
         $skillsRequest = $request->safe()->only(['skills']);
-        $skills = Skill::whereIn('uuid', $skillsRequest['skills'])->get();
+        $skills = Skill::leftJoin('employee_skills', 'employee_skills.skill_id', 'skills.id')
+                    ->where(function (Builder $query) use ($employee) {
+                        $query->whereNot('employee_skills.employee_id', $employee->id)
+                            ->orWhereNull('employee_skills.employee_id');
+                    })
+                    ->whereIn('uuid', $skillsRequest['skills'])->get();
+        
         $employee->skills()->attach($skills);
-    
         return Response::json(new EmployeeResource($employee->load('skills')));
     }
 
@@ -369,10 +375,12 @@ class EmployeeController extends Controller
     )]
     public function removeSkills(DetachSkillRequest $request, Employee $employee)
     {
-        $skills = $request->safe()->only(['skills']);
-        $skills = Skill::whereIn('uuid', $skillsRequest['skills'])->get();
-        $employee->skills()->detach($skills);
+        $skillsRequest = $request->safe()->only(['skills']);
+        $skills = Skill::innerJoin('employee_skills', 'employee_skills.skill_id', 'skills.id')
+                    ->where('employee_skills.employee_id', $employee->id)
+                    ->whereIn('uuid', $skillsRequest['skills'])->get();
 
+        $employee->skills()->detach($skills);
         return Response::json(new EmployeeResource($employee->load('skills')));
     }
 }
